@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)"
+    ]
+  },
+  "env": {
+    "SENATE_OUTPUT_ROOT": "output"
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "echo 'SENATE | The Curia Crown - twelve jurists, one counsel'"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -NoProfile -ExecutionPolicy Bypass -Command \"if (Test-Path 'CONSTITUTION.md') { $h = (Get-FileHash 'CONSTITUTION.md' -Algorithm SHA256).Hash.Substring(0,12).ToLower(); Write-Output ('[senate] The Twelve Tables loaded  sha256=' + $h + '  | Curia of 12 jurists ready. Entry: /senate, /legal-opinion, /senate-roster') } else { Write-Output '[senate] WARN: CONSTITUTION.md missing - the Curia will not deliberate without the Twelve Tables.' }\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

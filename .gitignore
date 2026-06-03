@@ -1,0 +1,4 @@
+output/*/
+!output/*/.gitkeep
+.claude/scheduled_tasks.lock
+*.lock
