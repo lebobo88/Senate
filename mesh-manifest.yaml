@@ -1,0 +1,76 @@
+apiVersion: agentmesh/v1
+kind: SiblingManifest
+
+metadata:
+  id: senate
+  displayName: "Senate Legal Wing"
+  version: "1.0.0"
+  description: "PhD-level legal counsel wing (the Curia Crown). Thin MCP shim via Hydra senate server."
+  # backendsKey: gateway flat-dict key.
+  # Source: ~/.hydra/backends.json — "senate" entry.
+  backendsKey: "senate"
+
+runtime:
+  type: python-langgraph
+  # Source: ~/.hydra/backends.json — "command": "python", "args": ["-m","mcp_servers.senate"]
+  entrypoint: "mcp_servers/senate/__main__.py"
+  cwd: "C:/AiAppDeployments/Hydra"
+  # Source: ~/.hydra/backends.json "senate" env block.
+  env:
+    PYTHONPATH: "C:/AiAppDeployments/Hydra"
+    HYDRA_SENATE_ROOT: "C:/AiAppDeployments/Senate"
+  healthProbe:
+    type: mcp-tool-call
+    # "senate.ping" is the dedicated health probe.
+    # Source: Hydra/mcp_servers/senate/server.py line 83 — "senate.ping": ping
+    tool: "senate.ping"
+    intervalMs: 20000
+    timeoutMs: 8000
+    failureThreshold: 3
+
+mcp:
+  endpoint:
+    type: stdio
+  # REAL tool names from Hydra/mcp_servers/senate/server.py — _tool_handlers() return dict.
+  # Source: server.py lines 73-83.
+  tools:
+    - "senate.roster.list"
+    - "senate.agent.get"
+    - "senate.skill.list"
+    - "senate.skill.get"
+    - "senate.command.list"
+    - "senate.command.get"
+    - "senate.output.write"
+    - "senate.output.read"
+    - "senate.ping"
+
+lifecycle:
+  startupDependencies:
+    - "hydra"
+  startTimeoutMs: 30000
+  gracefulShutdownMs: 10000
+  crashLoopBreaker:
+    threshold: 5
+    windowMs: 60000
+
+audit:
+  # "senate.output.read" retrieves legal output artifacts for audit stitching.
+  # Source: server.py line 81 — "senate.output.read": output_read
+  # Formal audit federation routes through TheEights per governance precedence.
+  # See manifests/GOVERNANCE-ROUTING.md §senate for details.
+  exportTool: "senate.output.read"
+  dedupeKeyField: "relative"
+
+governance:
+  # Constitution: The Twelve Tables of the Senate.
+  # Verified to exist: C:/AiAppDeployments/Senate/CONSTITUTION.md
+  # Runtime.cwd is C:/AiAppDeployments/Hydra; path traversal from Hydra cwd:
+  # resolve(join("C:/AiAppDeployments/Hydra","../Senate/CONSTITUTION.md"))
+  # = C:/AiAppDeployments/Senate/CONSTITUTION.md (correct).
+  constitutionPath: "../Senate/CONSTITUTION.md"
+  # senate server has no dedicated attest tool.
+  # "senate.ping" confirms MCP connectivity only.
+  # Formal constitution hash attestation routes through TheEights
+  # (eights.constitution.attest with consumer="senate") per governance precedence.
+  # See manifests/GOVERNANCE-ROUTING.md §senate.
+  attestTool: "senate.ping"
