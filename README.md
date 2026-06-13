@@ -139,7 +139,33 @@ Curia Crown), `entrypoint: claude-skill`:
 | **pair-programmer** | The Forge | Senate supplies OSS-license/IP/contract guardrails to engineering |
 | **RLM-Creative** | The Muses | Minerva clears IP for creative assets |
 | **MarketBliss** | Marketing ops | Regulated-claims review; escalation target for brand-safety-compliance |
-| **Xenia** | Greek guest-friendship | Future customer-support wing (doc-stage peer) |
+| **Xenia** | Greek guest-friendship (the Hearth) | **Active** customer-support squad — an 11-agent support crew (ticket triage, recommendation, VoC, approval-gated execution under WS-AUTH). Eunomia blocks improvised regulated claims (financial/medical/legal) and refers them up; the Senate is that legal-review depth — see `integrations/xenia.md` |
+| **AgentMesh** | The binding layer (tenth) | The governed control plane that unifies the nine siblings — one registry, lifecycle supervisor, observability + federated audit plane, protocol edge, operator console. The Senate **enrolls** via root `mesh-manifest.yaml`; AgentMesh routes and observes but enforces no governance of its own — see `integrations/agentmesh.md` |
+
+### The binding layer — AgentMesh enrollment
+
+The constellation is **nine sibling systems bound by a tenth**, **AgentMesh** —
+the thin, governed control plane. It unifies the nine behind one registry
+(SQLite `~/.agentmesh/state.db`; sole writer of `~/.hydra/backends.json`), one
+lifecycle supervisor (Win32 Job Objects + crash-loop breaker + health probes),
+one observability plane (OTEL + structured logs), one federated read-only audit
+timeline (stitched from TheEights / AgentSmith / Hydra chains), one external
+protocol edge (A2A, REST, MCP-over-HTTP), and one operator web console.
+
+The Senate **enrolls** by shipping a root [`mesh-manifest.yaml`](mesh-manifest.yaml)
+(`apiVersion: agentmesh/v1`, `kind: SiblingManifest`) — validated fail-closed
+against `AgentMesh/mesh-manifest.schema.json`: JSON-Schema validation +
+constitution attestation (via TheEights) + AgentSmith structural inspection
+must **all** pass before the Senate joins the mesh. The manifest declares the
+Senate's MCP surface (`senate.roster.list / agent.get / skill.* / command.* /
+output.* / ping`), its health probe (`senate.ping`, 20 s interval), startup
+dependency on Hydra, the constitution path (the Twelve Tables), and the audit
+export tool (`senate.output.read`).
+
+Crucially, **AgentMesh enforces no governance of its own.** Authority stays with
+the precedence chain **TheEights → AgentSmith → Hydra**; AgentMesh routes and
+observes — it does not arbitrate. The Tribune's Veto, the Law of Citations, and
+the Twelve Tables remain wholly the Senate's. Contract: `integrations/agentmesh.md`.
 
 ## Roadmap (from the research document)
 
@@ -173,7 +199,7 @@ Senate/
 │   ├── commands/            # 9 commands
 │   ├── rubrics/             # 8 gate rubrics
 │   └── settings.json
-├── integrations/            # 7 sibling-system contracts
+├── integrations/            # 9 sibling-system contracts
 └── output/                  # counsel-work-product, by domain
 ```
 

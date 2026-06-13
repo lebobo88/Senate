@@ -66,7 +66,10 @@ entire squad operationalizes.
 
 ## Sibling squads
 
-Xenia (customer-support, doc-stage) will follow the same pattern as the
-next stub promotion; the Senate's activation is the template (see Hydra's
-`docs/constellation/exec-memos/cto.md` roadmap item: "Promote one stub
-squad (legal-compliance) to active").
+Xenia (the customer-support **Hearth**) is now an **active** squad — an
+11-agent support crew with approval-gated execution under WS-AUTH — having
+followed the same stub→active path the Senate's promotion templated (see
+Hydra's `docs/constellation/exec-memos/cto.md` roadmap item: "Promote one
+stub squad (legal-compliance) to active"). The Senate is Xenia's
+legal-review depth for regulated-claim escalations; see
+`integrations/xenia.md`.
