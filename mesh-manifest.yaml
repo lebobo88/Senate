@@ -14,11 +14,11 @@ runtime:
   type: python-langgraph
   # Source: ~/.hydra/backends.json — "command": "python", "args": ["-m","mcp_servers.senate"]
   entrypoint: "mcp_servers/senate/__main__.py"
-  cwd: "C:/AiAppDeployments/Hydra"
+  cwd: "${HYDRA_ROOT}"
   # Source: ~/.hydra/backends.json "senate" env block.
   env:
-    PYTHONPATH: "C:/AiAppDeployments/Hydra"
-    HYDRA_SENATE_ROOT: "C:/AiAppDeployments/Senate"
+    PYTHONPATH: "${HYDRA_ROOT}"
+    HYDRA_SENATE_ROOT: "${HYDRA_SENATE_ROOT}"
   healthProbe:
     type: mcp-tool-call
     # "senate.ping" is the dedicated health probe.
@@ -63,10 +63,10 @@ audit:
 
 governance:
   # Constitution: The Twelve Tables of the Senate.
-  # Verified to exist: C:/AiAppDeployments/Senate/CONSTITUTION.md
-  # Runtime.cwd is C:/AiAppDeployments/Hydra; path traversal from Hydra cwd:
-  # resolve(join("C:/AiAppDeployments/Hydra","../Senate/CONSTITUTION.md"))
-  # = C:/AiAppDeployments/Senate/CONSTITUTION.md (correct).
+  # Verified to exist: ${HYDRA_SENATE_ROOT}/CONSTITUTION.md
+  # Runtime.cwd is ${HYDRA_ROOT}; path traversal from Hydra cwd:
+  # resolve(join("${HYDRA_ROOT}","../Senate/CONSTITUTION.md"))
+  # = ${HYDRA_SENATE_ROOT}/CONSTITUTION.md (correct).
   constitutionPath: "../Senate/CONSTITUTION.md"
   # senate server has no dedicated attest tool.
   # "senate.ping" confirms MCP connectivity only.
